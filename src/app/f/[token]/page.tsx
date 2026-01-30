@@ -2,8 +2,9 @@ import { getCaseByToken } from "@/lib/store";
 import { submitFormAction } from "./actions";
 import FormWizard from "./FormWizard";
 
-export default function PublicForm({ params }: { params: { token: string } }) {
-  const c = getCaseByToken(params.token);
+export default async function PublicForm({ params }: { params: Promise<{ token: string }> }) {
+  const { token } = await params;
+  const c = getCaseByToken(token);
 
   if (!c) {
     return (
@@ -16,7 +17,7 @@ export default function PublicForm({ params }: { params: { token: string } }) {
 
   async function action(fd: FormData) {
     "use server";
-    return submitFormAction(params.token, fd);
+    return submitFormAction(token, fd);
   }
 
   return (
@@ -28,7 +29,7 @@ export default function PublicForm({ params }: { params: { token: string } }) {
 
         <div className="relative z-10 p-6">
           <div className="max-w-xl mx-auto">
-            <FormWizard token={params.token} onSubmit={action} />
+            <FormWizard token={token} onSubmit={action} />
           </div>
         </div>
       </div>
