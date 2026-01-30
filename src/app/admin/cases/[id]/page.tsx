@@ -32,7 +32,7 @@ export default function CaseDetail({ params }: { params: { id: string } }) {
           <div className="font-medium">Ações</div>
 
           <form action={markStatusAction} className="mt-3 flex flex-wrap gap-2 items-center">
-            <input name="password" type="password" placeholder="Senha admin" className="border rounded px-3 py-2" required />
+            <input name="password" type="password" placeholder="Senha admin (se houver)" className="border rounded px-3 py-2" />
             <input type="hidden" name="id" value={c.id} />
             <select name="status" className="border rounded px-3 py-2" defaultValue={c.status}>
               <option value="PAGO_AGUARDANDO_FORM">PAGO_AGUARDANDO_FORM</option>
@@ -46,7 +46,7 @@ export default function CaseDetail({ params }: { params: { id: string } }) {
           </form>
 
           <form action={generateBookAction} className="mt-3 flex gap-2 items-center">
-            <input name="password" type="password" placeholder="Senha admin" className="border rounded px-3 py-2" required />
+            <input name="password" type="password" placeholder="Senha admin (se houver)" className="border rounded px-3 py-2" />
             <input type="hidden" name="id" value={c.id} />
             <button className="bg-indigo-600 text-white rounded px-3 py-2">Gerar book (IA)</button>
           </form>

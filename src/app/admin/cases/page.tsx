@@ -17,10 +17,9 @@ export default function CasesPage() {
         <form action={createCaseAction} className="mt-3 grid gap-2">
           <input
             name="password"
-            placeholder="Senha admin"
+            placeholder="Senha admin (se houver)"
             type="password"
             className="border rounded px-3 py-2"
-            required
           />
           <div className="grid md:grid-cols-3 gap-2">
             <input name="nome" placeholder="Nome da cliente" className="border rounded px-3 py-2" />
