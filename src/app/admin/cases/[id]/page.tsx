@@ -1,8 +1,9 @@
 import { getCaseById } from "@/lib/store";
 import { generateBookAction, markStatusAction } from "../actions";
 
-export default function CaseDetail({ params }: { params: { id: string } }) {
-  const c = getCaseById(params.id);
+export default async function CaseDetail({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const c = getCaseById(id);
 
   if (!c) {
     return (
