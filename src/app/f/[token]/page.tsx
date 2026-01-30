@@ -1,5 +1,6 @@
 import { getCaseByToken } from "@/lib/store";
 import { submitFormAction } from "./actions";
+import FormWizard from "./FormWizard";
 
 export default function PublicForm({ params }: { params: { token: string } }) {
   const c = getCaseByToken(params.token);
@@ -13,57 +14,24 @@ export default function PublicForm({ params }: { params: { token: string } }) {
     );
   }
 
-  async function action(formData: FormData) {
+  async function action(fd: FormData) {
     "use server";
-    return submitFormAction(params.token, formData);
+    return submitFormAction(params.token, fd);
   }
 
   return (
-    <main className="min-h-screen p-6 max-w-xl mx-auto">
-      <h1 className="text-xl font-semibold">Consultoria de Milhas</h1>
-      <p className="mt-2 text-sm text-gray-600">
-        Preencha por escrito. Se quiser, complemente por áudio depois.
-      </p>
+    <main className="min-h-screen">
+      <div className="relative min-h-screen">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(214,178,94,0.18),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.06),transparent_55%),linear-gradient(180deg,#05060a,rgba(5,6,10,0.96))]" />
+        <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?q=80&w=2400&auto=format&fit=crop')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-black/55" />
 
-      <form action={action} className="mt-6 grid gap-3">
-        <div className="font-medium">Seus dados</div>
-        <input name="cliente_nome" placeholder="Seu nome" className="border rounded px-3 py-2" required />
-        <input name="cliente_whatsapp" placeholder="Seu WhatsApp" className="border rounded px-3 py-2" required />
-        <input name="cliente_email" placeholder="Seu e-mail (opcional)" className="border rounded px-3 py-2" />
-
-        <div className="font-medium mt-2">Viagem</div>
-        <input name="origem" placeholder="Origem (cidade/aeroporto)" className="border rounded px-3 py-2" required />
-        <input name="destino" placeholder="Destino (cidade/país)" className="border rounded px-3 py-2" required />
-        <input name="datas" placeholder="Datas ou janela + duração" className="border rounded px-3 py-2" required />
-        <input name="pessoas" placeholder="Pessoas (ex: 2 adultos, 1 criança 5 anos)" className="border rounded px-3 py-2" required />
-        <select name="cabine" className="border rounded px-3 py-2" defaultValue="tanto_faz">
-          <option value="economica">Econômica</option>
-          <option value="executiva">Executiva</option>
-          <option value="tanto_faz">Tanto faz</option>
-        </select>
-
-        <div className="font-medium mt-2">Milhas / pontos</div>
-        <textarea
-          name="saldos"
-          placeholder="Saldos por programa (ex: Smiles 32k | Livelo 40k | Latam 0)"
-          className="border rounded px-3 py-2 h-24"
-          required
-        />
-
-        <div className="font-medium mt-2">Cartões</div>
-        <textarea name="cartoes" placeholder="Quais cartões você tem" className="border rounded px-3 py-2 h-20" />
-        <input name="gasto" placeholder="Gasto médio mensal (R$)" className="border rounded px-3 py-2" />
-        <input name="renda" placeholder="Renda mensal aprox. (R$)" className="border rounded px-3 py-2" />
-
-        <div className="font-medium mt-2">Observações</div>
-        <textarea name="obs" placeholder="Qualquer info importante" className="border rounded px-3 py-2 h-24" />
-
-        <button className="bg-black text-white rounded px-3 py-2">Enviar</button>
-
-        <p className="text-xs text-gray-600">
-          Caso: {c.id} • Status atual: {c.status}
-        </p>
-      </form>
+        <div className="relative z-10 p-6">
+          <div className="max-w-xl mx-auto">
+            <FormWizard token={params.token} onSubmit={action} />
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

@@ -15,16 +15,24 @@ export async function submitFormAction(token: string, formData: FormData) {
   const cabine = String(formData.get("cabine") || "").trim();
 
   const saldos = String(formData.get("saldos") || "").trim();
+  const clube = String(formData.get("clube") || "").trim();
+
   const cartoes = String(formData.get("cartoes") || "").trim();
   const gasto = String(formData.get("gasto") || "").trim();
   const renda = String(formData.get("renda") || "").trim();
+  const dependente = String(formData.get("dependente") || "").trim();
+
+  const escala = String(formData.get("escala") || "").trim();
+  const preferencia_pagamento = String(formData.get("preferencia_pagamento") || "").trim();
+  const restricoes = String(formData.get("restricoes") || "").trim();
+
   const obs = String(formData.get("obs") || "").trim();
 
   const payload = {
     cliente: { nome: cliente_nome, whatsapp: cliente_whatsapp, email: cliente_email },
-    viagem: { origem, destino, datas, pessoas, cabine },
-    milhas: { saldos },
-    cartoes: { cartoes, gasto_mensal_medio: gasto, renda_mensal_aprox: renda },
+    viagem: { origem, destino, datas, pessoas, cabine, escala, preferencia_pagamento, restricoes },
+    milhas: { saldos, clube },
+    cartoes: { cartoes, gasto_mensal_medio: gasto, renda_mensal_aprox: renda, dependente },
     observacoes: obs,
   };
 
