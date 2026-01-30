@@ -38,4 +38,6 @@ export async function submitFormAction(token: string, formData: FormData) {
 
   saveFormByToken(token, payload);
   revalidatePath(`/f/${token}`);
+  revalidatePath("/admin/cases");
 }
+
