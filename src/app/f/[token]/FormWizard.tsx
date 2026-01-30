@@ -124,7 +124,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
         {step < total && <Progress step={step} total={total} />}
       </div>
 
-      {step === 0 && (
+      <div className={step === 0 ? "" : "hidden"}>
         <Card>
           <div className="space-y-3 text-white/80 text-sm">
             <p>
@@ -140,9 +140,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 1 && (
+      <div className={step === 1 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -167,9 +167,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 2 && (
+      <div className={step === 2 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -206,9 +206,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 3 && (
+      <div className={step === 3 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -237,9 +237,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 4 && (
+      <div className={step === 4 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -268,9 +268,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 5 && (
+      <div className={step === 5 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -306,9 +306,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
-      {step === 6 && (
+      <div className={step === 6 ? "" : "hidden"}>
         <Card>
           <div className="space-y-3 text-sm text-white/80">
             <p>
@@ -333,7 +333,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </button>
           </div>
         </Card>
-      )}
+      </div>
 
       {step >= total && (
         <Card>
