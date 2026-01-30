@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 type Props = {
   token: string;
@@ -72,6 +72,7 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
 }
 
 export default function FormWizard({ token, onSubmit }: Props) {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
@@ -79,7 +80,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
     () => [
       { key: "intro", title: "Consultoria de Milhas", subtitle: "Vamos montar sua estratégia personalizada." },
       { key: "dados", title: "Seus dados", subtitle: "Só o essencial para eu te atender." },
-      { key: "viagem", title: "Viagem", subtitle: "Origem, destino, datas e pessoas." },
+      { key: "viagem", title: "Voos", subtitle: "Origem, destino, datas e preferências de rota." },
       { key: "milhas", title: "Milhas e pontos", subtitle: "Quero entender seu saldo e onde faz sentido concentrar." },
       { key: "cartoes", title: "Cartões e perfil", subtitle: "Para eu calcular o gap e as estratégias de acúmulo." },
       { key: "preferencias", title: "Preferências", subtitle: "Regras do jogo para a estratégia." },
@@ -90,7 +91,34 @@ export default function FormWizard({ token, onSubmit }: Props) {
 
   const total = steps.length;
 
+  function validateCurrentStep(): boolean {
+    if (step === 0 || step >= total) return true;
+
+    const root = formRef.current;
+    if (!root) return true;
+
+    const container = root.querySelector<HTMLElement>(`[data-step="${step}"]`);
+    if (!container) return true;
+
+    const fields = Array.from(container.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+      "input, textarea, select"
+    ));
+
+    for (const el of fields) {
+      // ignore hidden inputs
+      if (el instanceof HTMLInputElement && el.type === "hidden") continue;
+
+      if (!el.checkValidity()) {
+        el.reportValidity();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   function next() {
+    if (!validateCurrentStep()) return;
     setStep((s) => Math.min(s + 1, total - 1));
   }
 
@@ -100,6 +128,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
 
   return (
     <form
+      ref={formRef}
       action={async (fd) => {
         setSubmitting(true);
         try {
@@ -124,15 +153,11 @@ export default function FormWizard({ token, onSubmit }: Props) {
         {step < total && <Progress step={step} total={total} />}
       </div>
 
-      <div className={step === 0 ? "" : "hidden"}>
+      <div data-step="0" className={step === 0 ? "" : "hidden"}>
         <Card>
           <div className="space-y-3 text-white/80 text-sm">
-            <p>
-              Responda por escrito. Se quiser complementar alguma explicação, pode mandar áudio depois.
-            </p>
-            <p className="text-white/60">
-              Tempo médio: 2–4 min.
-            </p>
+            <p>Responda por escrito. Se quiser complementar alguma explicação, pode mandar áudio depois.</p>
+            <p className="text-white/60">Tempo médio: 2–4 min.</p>
           </div>
           <div className="mt-6 flex gap-2 justify-end">
             <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
@@ -142,7 +167,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 1 ? "" : "hidden"}>
+      <div data-step="1" className={step === 1 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -169,7 +194,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 2 ? "" : "hidden"}>
+      <div data-step="2" className={step === 2 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -177,13 +202,59 @@ export default function FormWizard({ token, onSubmit }: Props) {
               <Input name="origem" placeholder="Cidade/aeroporto (ex: VIX, CNF, GRU...)" required />
             </div>
             <div>
-              <Label>Destino desejo</Label>
+              <Label>Destino desejado</Label>
               <Input name="destino" placeholder="Cidade/país" required />
             </div>
-            <div>
-              <Label>Datas</Label>
-              <Input name="datas" placeholder="Data definida ou janela + duração (ex: Março, 7 dias)" required />
+
+            <div className="grid md:grid-cols-2 gap-3">
+              <div>
+                <Label>Data de ida</Label>
+                <Input name="data_ida" type="date" required />
+              </div>
+              <div>
+                <Label>Data de volta</Label>
+                <Input name="data_volta" type="date" required />
+              </div>
             </div>
+
+            <div className="grid md:grid-cols-2 gap-3">
+              <div>
+                <Label>Flexibilidade na ida (dias)</Label>
+                <Select name="flex_ida_dias" defaultValue="0">
+                  <option value="0">0</option>
+                  <option value="1">± 1</option>
+                  <option value="2">± 2</option>
+                  <option value="3">± 3</option>
+                  <option value="5">± 5</option>
+                  <option value="7">± 7</option>
+                </Select>
+              </div>
+              <div>
+                <Label>Flexibilidade na volta (dias)</Label>
+                <Select name="flex_volta_dias" defaultValue="0">
+                  <option value="0">0</option>
+                  <option value="1">± 1</option>
+                  <option value="2">± 2</option>
+                  <option value="3">± 3</option>
+                  <option value="5">± 5</option>
+                  <option value="7">± 7</option>
+                </Select>
+              </div>
+            </div>
+
+            <div>
+              <Label>Você aceita voos com conexão/escala?</Label>
+              <Select name="conexao" defaultValue="depende">
+                <option value="direto">Prefiro somente voos diretos</option>
+                <option value="uma">Aceito 1 conexão (ok)</option>
+                <option value="qualquer">Aceito conexões (sem problema)</option>
+                <option value="depende">Depende (explico nas restrições)</option>
+              </Select>
+              <div className="mt-2 text-xs text-white/55">
+                Se tiver preferência de tempo máximo de conexão, detalhe em “Restrições importantes”.
+              </div>
+            </div>
+
             <div>
               <Label>Pessoas</Label>
               <Input name="pessoas" placeholder="Ex: 2 adultos, 1 criança (5 anos)" required />
@@ -208,21 +279,27 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 3 ? "" : "hidden"}>
+      <div data-step="3" className={step === 3 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
-              <Label>Saldos de pontos/milhas por programa</Label>
-              <Textarea
-                name="saldos"
-                placeholder="Ex: Smiles 32.000 | Livelo 45.000 | Latam Pass 0 | Esfera 12.000"
-                className="h-28"
-                required
-              />
+              <Label>Saldos de pontos/milhas (por programa)</Label>
+              <div className="grid md:grid-cols-2 gap-3">
+                <Input name="saldo_livelo" placeholder="Livelo" inputMode="numeric" />
+                <Input name="saldo_esfera" placeholder="Esfera" inputMode="numeric" />
+                <Input name="saldo_smiles" placeholder="Smiles" inputMode="numeric" />
+                <Input name="saldo_latam_pass" placeholder="Latam Pass" inputMode="numeric" />
+                <Input name="saldo_tudoazul" placeholder="TudoAzul" inputMode="numeric" />
+                <div className="grid grid-cols-2 gap-3">
+                  <Input name="saldo_outros_programa" placeholder="Outros (qual programa?)" />
+                  <Input name="saldo_outros" placeholder="Saldo" inputMode="numeric" />
+                </div>
+              </div>
               <div className="mt-2 text-xs text-white/55">
-                Se souber, inclua validade (ex: Smiles 32k (06/2026)).
+                Pode digitar só números (ex: 32000). Se souber, inclua validade no campo de observações.
               </div>
             </div>
+
             <div>
               <Label>Você já tem clube/assinatura?</Label>
               <Input name="clube" placeholder="Ex: Clube Smiles 1.000 / não tenho" />
@@ -239,7 +316,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 4 ? "" : "hidden"}>
+      <div data-step="4" className={step === 4 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
             <div>
@@ -270,17 +347,9 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 5 ? "" : "hidden"}>
+      <div data-step="5" className={step === 5 ? "" : "hidden"}>
         <Card>
           <div className="space-y-4">
-            <div>
-              <Label>Aceita escala?</Label>
-              <Select name="escala" defaultValue="depende">
-                <option value="sim">Sim</option>
-                <option value="nao">Não</option>
-                <option value="depende">Depende</option>
-              </Select>
-            </div>
             <div>
               <Label>Preferência: usar milhas ao máximo ou aceita pagar parte em dinheiro?</Label>
               <Select name="preferencia_pagamento" defaultValue="milhas_ao_maximo">
@@ -290,7 +359,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
             <div>
               <Label>Restrições importantes</Label>
-              <Textarea name="restricoes" placeholder="Horários, companhias, conexões longas etc." className="h-24" />
+              <Textarea name="restricoes" placeholder="Horários, companhias, tempo máximo de conexão, aeroportos alternativos etc." className="h-24" />
             </div>
             <div>
               <Label>Observações</Label>
@@ -308,16 +377,14 @@ export default function FormWizard({ token, onSubmit }: Props) {
         </Card>
       </div>
 
-      <div className={step === 6 ? "" : "hidden"}>
+      <div data-step="6" className={step === 6 ? "" : "hidden"}>
         <Card>
           <div className="space-y-3 text-sm text-white/80">
-            <p>
-              Antes de enviar, confira se:
-            </p>
+            <p>Antes de enviar, confira se:</p>
             <ul className="list-disc pl-5 space-y-1 text-white/70">
               <li>Destino e origem estão corretos</li>
-              <li>Datas ou janela estão claras</li>
-              <li>Saldos de milhas estão completos</li>
+              <li>Datas de ida/volta estão corretas</li>
+              <li>Se marcou flexibilidade, ela faz sentido para você</li>
             </ul>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
@@ -339,16 +406,12 @@ export default function FormWizard({ token, onSubmit }: Props) {
         <Card>
           <div className="space-y-2 text-white/80">
             <div className={`text-sm ${accent}`}>Suas respostas foram recebidas.</div>
-            <div className="text-sm text-white/70">
-              Próximo passo: eu vou analisar e te retorno com o agendamento e o book.
-            </div>
+            <div className="text-sm text-white/70">Próximo passo: eu vou analisar e te retorno com o agendamento e o book.</div>
           </div>
         </Card>
       )}
 
-      <div className="mt-6 text-xs text-white/35">
-        Identificador: {token}
-      </div>
+      <div className="mt-6 text-xs text-white/35">Identificador: {token}</div>
     </form>
   );
 }
