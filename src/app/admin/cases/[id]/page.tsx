@@ -1,5 +1,17 @@
 import { getCaseById } from "@/lib/store";
+import AdminShell from "../../AdminShell";
 import { generateBookAction, markStatusAction } from "../actions";
+
+function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-[#d6b25e]/60 focus:ring-2 focus:ring-[#d6b25e]/15 ${
+        props.className || ""
+      }`}
+    />
+  );
+}
 
 export default async function CaseDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -7,35 +19,36 @@ export default async function CaseDetail({ params }: { params: Promise<{ id: str
 
   if (!c) {
     return (
-      <main className="min-h-screen p-6 max-w-4xl mx-auto">
-        <p>Caso não encontrado.</p>
-      </main>
+      <AdminShell title="Caso não encontrado">
+        <p className="text-white/70">Esse caso não existe.</p>
+      </AdminShell>
     );
   }
 
   return (
-    <main className="min-h-screen p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-semibold">Caso {c.id}</h1>
-      <p className="mt-1 text-sm text-gray-600">Status: {c.status}</p>
-
-      <section className="mt-6 grid gap-3">
-        <div className="border rounded-lg p-4">
-          <div className="font-medium">Cliente</div>
-          <div className="text-sm">Nome: {c.cliente?.nome || "(não informado)"}</div>
-          <div className="text-sm">WhatsApp: {c.cliente?.whatsapp || "(não informado)"}</div>
-          <div className="text-sm">Email: {c.cliente?.email || "(não informado)"}</div>
-          <div className="text-sm mt-2">
-            Link do formulário: <span className="font-mono">/f/{c.token}</span>
+    <AdminShell title={`Caso ${c.id}`} subtitle={`Status: ${c.status}`}> 
+      <section className="grid gap-4">
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5">
+          <div className="font-medium text-white">Cliente</div>
+          <div className="mt-2 text-sm text-white/80">Nome: {c.cliente?.nome || "(não informado)"}</div>
+          <div className="text-sm text-white/80">WhatsApp: {c.cliente?.whatsapp || "(não informado)"}</div>
+          <div className="text-sm text-white/80">Email: {c.cliente?.email || "(não informado)"}</div>
+          <div className="mt-3 text-sm text-white/80">
+            Formulário: <span className="font-mono">/f/{c.token}</span>
           </div>
         </div>
 
-        <div className="border rounded-lg p-4">
-          <div className="font-medium">Ações</div>
+        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5">
+          <div className="font-medium text-white">Ações</div>
 
-          <form action={markStatusAction} className="mt-3 flex flex-wrap gap-2 items-center">
-            <input name="password" type="password" placeholder="Senha admin (se houver)" className="border rounded px-3 py-2" />
+          <form action={markStatusAction} className="mt-4 grid md:grid-cols-[1fr_auto_auto] gap-2 items-center">
+            <Input name="password" type="password" placeholder="Senha admin (se houver)" />
             <input type="hidden" name="id" value={c.id} />
-            <select name="status" className="border rounded px-3 py-2" defaultValue={c.status}>
+            <select
+              name="status"
+              className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white"
+              defaultValue={c.status}
+            >
               <option value="PAGO_AGUARDANDO_FORM">PAGO_AGUARDANDO_FORM</option>
               <option value="FORM_RECEBIDO">FORM_RECEBIDO</option>
               <option value="EM_ANALISE">EM_ANALISE</option>
@@ -43,23 +56,23 @@ export default async function CaseDetail({ params }: { params: Promise<{ id: str
               <option value="ENVIADO">ENVIADO</option>
               <option value="ENTREGUE">ENTREGUE</option>
             </select>
-            <button className="bg-black text-white rounded px-3 py-2">Salvar status</button>
+            <button className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black w-fit">Salvar status</button>
           </form>
 
-          <form action={generateBookAction} className="mt-3 flex gap-2 items-center">
-            <input name="password" type="password" placeholder="Senha admin (se houver)" className="border rounded px-3 py-2" />
+          <form action={generateBookAction} className="mt-3 grid md:grid-cols-[1fr_auto] gap-2 items-center">
+            <Input name="password" type="password" placeholder="Senha admin (se houver)" />
             <input type="hidden" name="id" value={c.id} />
-            <button className="bg-indigo-600 text-white rounded px-3 py-2">Gerar book (IA)</button>
+            <button className="rounded-xl bg-[#2f6fff] px-4 py-2 font-medium text-white w-fit">Gerar book (IA)</button>
           </form>
 
-          <p className="mt-2 text-xs text-gray-600">
+          <p className="mt-3 text-xs text-white/55">
             Se OPENAI_API_KEY não estiver configurada, vai gerar um placeholder.
           </p>
         </div>
 
-        <div className="border rounded-lg p-4">
-          <div className="font-medium">Dados do formulário</div>
-          <pre className="mt-2 text-xs bg-gray-50 p-3 rounded overflow-auto">
+        <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+          <div className="font-medium text-white">Dados do formulário</div>
+          <pre className="mt-3 text-xs text-white/70 bg-black/30 p-4 rounded-xl overflow-auto">
 {JSON.stringify(
   {
     viagem: c.viagem ?? null,
@@ -73,24 +86,24 @@ export default async function CaseDetail({ params }: { params: Promise<{ id: str
           </pre>
         </div>
 
-        <div className="border rounded-lg p-4">
-          <div className="font-medium">Book (para colar no Canva)</div>
+        <div className="rounded-2xl border border-white/10 bg-black/25 p-5">
+          <div className="font-medium text-white">Book (para colar no Canva)</div>
           {c.book?.pagesText ? (
             <>
               <textarea
                 readOnly
-                className="mt-2 w-full h-[420px] border rounded p-3 font-mono text-xs"
+                className="mt-3 w-full h-[440px] rounded-xl border border-white/10 bg-black/30 p-4 font-mono text-xs text-white/85"
                 value={c.book.pagesText}
               />
-              <p className="mt-2 text-xs text-gray-600">
-                Dica: selecione tudo, copie e cole página por página no template do Canva.
+              <p className="mt-2 text-xs text-white/55">
+                Copie e cole página por página no template do Canva. Adicione prints nas páginas reservadas.
               </p>
             </>
           ) : (
-            <p className="mt-2 text-sm text-gray-600">Ainda não foi gerado.</p>
+            <p className="mt-2 text-sm text-white/70">Ainda não foi gerado.</p>
           )}
         </div>
       </section>
-    </main>
+    </AdminShell>
   );
 }
