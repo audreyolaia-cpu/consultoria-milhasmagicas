@@ -7,7 +7,7 @@ type Props = {
   onSubmit: (fd: FormData) => void;
 };
 
-const accent = "text-[#d6b25e]";
+const accent = "text-[color:var(--mm-gold)]";
 
 function Progress({ step, total }: { step: number; total: number }) {
   const pct = Math.round(((step + 1) / total) * 100);
@@ -20,7 +20,10 @@ function Progress({ step, total }: { step: number; total: number }) {
         <span>{pct}%</span>
       </div>
       <div className="mt-2 h-2 w-full rounded-full bg-white/10 overflow-hidden">
-        <div className="h-full bg-gradient-to-r from-[#d6b25e] to-[#f3d27a]" style={{ width: `${pct}%` }} />
+        <div
+          className="h-full bg-gradient-to-r from-[color:var(--mm-gold)] to-[color:rgba(213,166,63,0.55)]"
+          style={{ width: `${pct}%` }}
+        />
       </div>
     </div>
   );
@@ -42,7 +45,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-[#d6b25e]/60 focus:ring-2 focus:ring-[#d6b25e]/15 ${
+      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[color:rgba(213,166,63,0.60)] focus:ring-2 focus:ring-[color:rgba(213,166,63,0.15)] ${
         props.className || ""
       }`}
     />
@@ -53,7 +56,7 @@ function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (
     <textarea
       {...props}
-      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-[#d6b25e]/60 focus:ring-2 focus:ring-[#d6b25e]/15 ${
+      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[color:rgba(213,166,63,0.60)] focus:ring-2 focus:ring-[color:rgba(213,166,63,0.15)] ${
         props.className || ""
       }`}
     />
@@ -64,7 +67,7 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       {...props}
-      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none focus:border-[#d6b25e]/60 focus:ring-2 focus:ring-[#d6b25e]/15 ${
+      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white outline-none transition focus:border-[color:rgba(213,166,63,0.60)] focus:ring-2 focus:ring-[color:rgba(213,166,63,0.15)] ${
         props.className || ""
       }`}
     />
@@ -143,10 +146,19 @@ export default function FormWizard({ token, onSubmit }: Props) {
       <input type="hidden" name="token" value={token} />
 
       <div className="mb-6">
-        <div className={`text-sm ${accent} tracking-widest`}>MILHAS MÁGICAS</div>
-        <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white">
-          {step < total ? steps[step].title : "Recebido"}
-        </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <div className={`text-sm ${accent} tracking-widest`}>MILHAS MÁGICAS</div>
+            <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white">
+              {step < total ? steps[step].title : "Recebido"}
+            </h1>
+          </div>
+          <div className="hidden sm:block">
+            <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/70">
+              {token.slice(0, 6)}…{token.slice(-4)}
+            </div>
+          </div>
+        </div>
         <p className="mt-2 text-white/70 text-sm md:text-base">
           {step < total ? steps[step].subtitle : "Perfeito. Suas respostas foram registradas."}
         </p>
@@ -160,7 +172,11 @@ export default function FormWizard({ token, onSubmit }: Props) {
             <p className="text-white/60">Tempo médio: 2–4 min.</p>
           </div>
           <div className="mt-6 flex gap-2 justify-end">
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Começar
             </button>
           </div>
@@ -184,10 +200,18 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
-            <button type="button" onClick={back} className="rounded-xl border border-white/15 px-4 py-2 text-white/80">
+            <button
+              type="button"
+              onClick={back}
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white/85 hover:bg-white/10"
+            >
               Voltar
             </button>
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Próximo
             </button>
           </div>
@@ -269,10 +293,18 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
-            <button type="button" onClick={back} className="rounded-xl border border-white/15 px-4 py-2 text-white/80">
+            <button
+              type="button"
+              onClick={back}
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white/85 hover:bg-white/10"
+            >
               Voltar
             </button>
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Próximo
             </button>
           </div>
@@ -306,10 +338,18 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
-            <button type="button" onClick={back} className="rounded-xl border border-white/15 px-4 py-2 text-white/80">
+            <button
+              type="button"
+              onClick={back}
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white/85 hover:bg-white/10"
+            >
               Voltar
             </button>
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Próximo
             </button>
           </div>
@@ -337,10 +377,18 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
-            <button type="button" onClick={back} className="rounded-xl border border-white/15 px-4 py-2 text-white/80">
+            <button
+              type="button"
+              onClick={back}
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white/85 hover:bg-white/10"
+            >
               Voltar
             </button>
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Próximo
             </button>
           </div>
@@ -367,10 +415,18 @@ export default function FormWizard({ token, onSubmit }: Props) {
             </div>
           </div>
           <div className="mt-6 flex gap-2 justify-between">
-            <button type="button" onClick={back} className="rounded-xl border border-white/15 px-4 py-2 text-white/80">
+            <button
+              type="button"
+              onClick={back}
+              className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-white/85 hover:bg-white/10"
+            >
               Voltar
             </button>
-            <button type="button" onClick={next} className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black">
+            <button
+              type="button"
+              onClick={next}
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
+            >
               Próximo
             </button>
           </div>
@@ -394,7 +450,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
             <button
               type="submit"
               disabled={submitting}
-              className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black disabled:opacity-60"
+              className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95 disabled:opacity-60"
             >
               {submitting ? "Enviando..." : "Enviar"}
             </button>
