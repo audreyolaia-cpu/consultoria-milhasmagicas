@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
+import { Geist } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const cocoGothic = localFont({
-  src: [
-    { path: "../../public/fonts/coco-gothic.ttf", weight: "400", style: "normal" },
-    { path: "../../public/fonts/coco-gothic-bold.ttf", weight: "700", style: "normal" },
-  ],
+// Body font (better numbers)
+const geistSans = Geist({
+  subsets: ["latin"],
   variable: "--font-mm-sans",
-  display: "swap",
 });
 
+// Display font (brand)
 const blushingRose = localFont({
   src: [{ path: "../../public/fonts/blushing-rose.ttf", weight: "400", style: "normal" }],
   variable: "--font-mm-display",
@@ -29,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${cocoGothic.variable} ${blushingRose.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${blushingRose.variable} antialiased`}>
         {children}
       </body>
     </html>

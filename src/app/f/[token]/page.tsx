@@ -1,4 +1,5 @@
 import { getCaseByToken } from "@/lib/store";
+import BrandLogo from "@/app/components/BrandLogo";
 import { submitFormAction } from "./actions";
 import FormWizard from "./FormWizard";
 
@@ -30,6 +31,10 @@ export default async function PublicForm({ params }: { params: Promise<{ token: 
 
         <div className="relative z-10 p-6">
           <div className="mx-auto max-w-xl">
+            <header className="mb-6 flex justify-center">
+              <BrandLogo className="opacity-95" />
+            </header>
+
             <FormWizard token={token} onSubmit={action} />
           </div>
         </div>

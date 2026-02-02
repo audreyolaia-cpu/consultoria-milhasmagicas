@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/app/components/BrandLogo";
 
 export default function AdminShell({
   title,
@@ -17,11 +18,13 @@ export default function AdminShell({
 
         <div className="relative z-10 p-6">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <div className="text-sm text-[#d6b25e] tracking-widest">MILHAS MÁGICAS • ADMIN</div>
-                <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white">{title}</h1>
-                {subtitle ? <p className="mt-2 text-white/70">{subtitle}</p> : null}
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex items-start gap-4">
+                <BrandLogo className="shrink-0" />
+                <div>
+                  <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white mm-display">{title}</h1>
+                  {subtitle ? <p className="mt-2 text-white/70">{subtitle}</p> : null}
+                </div>
               </div>
               <div className="flex gap-3">
                 <Link className="text-white/80 hover:text-white underline" href="/admin/cases">
