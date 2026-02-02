@@ -7,7 +7,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none focus:border-[#d6b25e]/60 focus:ring-2 focus:ring-[#d6b25e]/15 ${
+      className={`w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-white/40 outline-none transition focus:border-[color:rgba(213,166,63,0.60)] focus:ring-2 focus:ring-[color:rgba(213,166,63,0.15)] ${
         props.className || ""
       }`}
     />
@@ -39,7 +39,7 @@ export default function CasesPage() {
             <Input name="email" placeholder="E-mail" />
           </div>
 
-          <button className="rounded-xl bg-[#d6b25e] px-4 py-2 font-medium text-black w-fit">
+          <button className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] w-fit shadow-[0_10px_30px_rgba(213,166,63,0.20)] hover:brightness-105 active:brightness-95">
             Criar
           </button>
         </form>

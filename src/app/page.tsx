@@ -4,10 +4,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(214,178,94,0.20),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(255,255,255,0.06),transparent_55%),linear-gradient(180deg,#05060a,rgba(5,6,10,0.96))]" />
-      <div className="absolute inset-0 opacity-35 bg-[url('https://images.unsplash.com/photo-1513346940221-6f673d962e97?q=80&w=2400&auto=format&fit=crop')] bg-cover bg-center" />
-      <div className="absolute inset-0 bg-black/55" />
+      {/* Background (clean-luxury) */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(213,166,63,0.14),transparent_60%),radial-gradient(ellipse_at_bottom,rgba(140,23,93,0.08),transparent_58%),linear-gradient(180deg,#090605,rgba(9,6,5,0.98))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.06),transparent_40%),radial-gradient(circle_at_75%_80%,rgba(255,255,255,0.04),transparent_45%)]" />
 
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-10">
         <header className="flex items-center justify-between gap-6">
@@ -51,7 +50,7 @@ export default function Home() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
                 href="https://wa.me/5527999539641"
-                className="inline-flex h-12 items-center justify-center rounded-xl bg-[#d6b25e] px-5 text-sm font-semibold text-black shadow-[0_10px_40px_rgba(214,178,94,0.25)]"
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-[color:var(--mm-gold)] px-5 text-sm font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_40px_rgba(213,166,63,0.25)]"
               >
                 Quero fazer consultoria
               </a>
