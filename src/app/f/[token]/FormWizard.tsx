@@ -148,7 +148,6 @@ export default function FormWizard({ token, onSubmit }: Props) {
       <div className="mb-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <div className={`text-sm ${accent} tracking-widest`}>MILHAS MÁGICAS</div>
             <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white mm-display">
               {step < total ? steps[step].title : "Recebido"}
             </h1>
@@ -212,7 +211,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
               onClick={next}
               className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
             >
-              Próximo
+              Continuar
             </button>
           </div>
         </Card>
@@ -305,7 +304,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
               onClick={next}
               className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
             >
-              Próximo
+              Continuar
             </button>
           </div>
         </Card>
@@ -350,7 +349,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
               onClick={next}
               className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
             >
-              Próximo
+              Continuar
             </button>
           </div>
         </Card>
@@ -389,7 +388,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
               onClick={next}
               className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
             >
-              Próximo
+              Continuar
             </button>
           </div>
         </Card>
@@ -427,7 +426,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
               onClick={next}
               className="rounded-xl bg-[color:var(--mm-gold)] px-4 py-2 font-semibold text-[color:var(--mm-ink)] shadow-[0_10px_30px_rgba(213,166,63,0.25)] hover:brightness-105 active:brightness-95"
             >
-              Próximo
+              Continuar
             </button>
           </div>
         </Card>
