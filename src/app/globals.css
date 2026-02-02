@@ -13,8 +13,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  /* Fonts */
+  --font-sans: var(--font-mm-sans);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,11 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-mm-sans), system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+}
+
+.mm-display {
+  font-family: var(--font-mm-display), var(--font-mm-sans), system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
 }
 
 /* Small helpers */

@@ -149,7 +149,7 @@ export default function FormWizard({ token, onSubmit }: Props) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className={`text-sm ${accent} tracking-widest`}>MILHAS MÁGICAS</div>
-            <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white">
+            <h1 className="mt-2 text-2xl md:text-3xl font-semibold text-white mm-display">
               {step < total ? steps[step].title : "Recebido"}
             </h1>
           </div>
